@@ -79,38 +79,34 @@
                 </div>
             @endif
 
-            @if(Session::has('message'))
-                <h4>{{ Session::get('message') }}</h4>
-            @endif
-
-            @auth
-                <p>Bonjour {{ Auth::user()->name }} {{Auth::user()->created_at->diffForHumans()}} {{Auth::user()->created_at->diffInMinutes()}} minutes</p>
-            @endauth
-            
             <div class="content">
                 <div class="title m-b-md">
                     Laravel
                 </div>
-
-                <table style="width: 100%; margin-bottom:25px">
+                <table style="width: 100%">
                     <tr>
                         <th>Nom</th>
                         <th>Age</th>
                         <th>Photo</th>
                     </tr>
-                    @foreach($cl->students()->withTrashed()->get() as $value)
                     <tr>
-                        <td> {{ transformName($value->name) }} </td>
-                        <td> {{ $value->age }} </td>
-                        <td> <img src="{{ asset($value->photo) }}" width=""> </td>
-                        @auth
-                            <td> <a href="{{ route('handleDeleteStudent', ['id'=>$value->id]) }}"><button style="color:red">Effacer</button></a> </td>
-                            <td> <a href="{{ route('showEditStudent', ['id'=>$value->id]) }}"><button style="color:red">Editer</button></a> </td>
-                        @endauth
+                        <form method="POST" action="{{ route('handleAddStudent') }}" enctype="multipart/form-data">
+                            @csrf
+                            <td><input type="text" name="name"></td>
+                            <td><input type="number" name="age"></td>
+                            <td><input type="file" name="photo"></td>
+                            <td>
+                                <select name="classrooms">
+                                    @foreach($cl as $value)
+                                    <option value="{{ $value->id }}">{{ $value->title }}</option>
+                                    @endforeach
+                                </select>
+                            </td>
+                            <td><button type="submit" style="color:green">Enregistrer</button></td> 
+                        </form>
                     </tr>
-                    @endforeach
                 </table>
-
+            
                 <div class="links">
                     <a href="https://laravel.com/docs">Docs</a>
                     <a href="https://laracasts.com">Laracasts</a>

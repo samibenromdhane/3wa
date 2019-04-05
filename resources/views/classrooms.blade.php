@@ -121,6 +121,8 @@
                     @endforeach
                 </table>
 
+                <a href="{{ route('showAddStudent') }}"><button>Add Student</button></a>
+
                 @auth
                     <a href="{{ route('handleLogout') }}"><button style="color:green">Logout</button></a>
                 @endauth

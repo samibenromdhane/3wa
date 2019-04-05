@@ -30,6 +30,8 @@ Route::middleware(['access'])->group(function () {
 	Route::get('/students/delete/{id}','ClassroomController@handleDeleteStudent')->name('handleDeleteStudent');
 	Route::get('/students/show/{id}','ClassroomController@showEditStudent')->name('showEditStudent');
 	Route::post('/students/edit/{id}','ClassroomController@handleEditStudent')->name('handleEditStudent');
+	Route::get('/students/add/new','ClassroomController@showAddStudent')->name('showAddStudent');
+	Route::post('/students/add','ClassroomController@handleAddStudent')->name('handleAddStudent');
 });
 
 Route::get('/user/login','ClassroomController@showLogin')->name('showLogin');

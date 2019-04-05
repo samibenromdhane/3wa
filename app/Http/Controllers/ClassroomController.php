@@ -10,6 +10,7 @@ use App\Classroom;
 use App\Student;
 use App\User;
 use Auth;
+use Intervention\Image\Facades\Image;
 
 class ClassroomController extends Controller
 {
@@ -88,7 +89,7 @@ class ClassroomController extends Controller
  		//dd(Student::find($id)->with('classroom')->first());
  		//dd(Classroom::find($id)->withCount('students')->get());
  		$cl = Classroom::find($id);
- 		
+
  		return view('classroom',['cl'=>$cl]);
  	}
 
@@ -207,4 +208,35 @@ class ClassroomController extends Controller
 
  		return redirect(route('showClassrooms'));
  	}
+
+ 	public function showAddStudent()
+ 	{
+ 		$cl = Classroom::all();
+ 		return view('addStudent',['cl'=>$cl]);
+ 	}
+
+ 	public function handleAddStudent()
+ 	{
+
+ 		$data = Input::all();
+
+ 		$photo = 'photo-' . str_random(5) . time() . '.' . $data['photo']->getClientOriginalExtension();
+
+        $fullImagePath = public_path('storage/' . $photo);
+        Image::make($data['photo']->getRealPath())->blur(50)->save($fullImagePath);
+        $photoPath = 'storage/' . $photo;
+
+
+ 		
+ 		$cl = Student::create(
+    		[
+    			'name' => $data['name'],
+    			'age'  => $data['age'],
+    			'classroom_id'=> $data['classrooms'],
+    			'photo'=> $photoPath
+    		]
+    	);
+ 	}
+
+
 }
